@@ -62,16 +62,12 @@ def convert_tw_to_caldav(tw_item: Item) -> Item:
         caldav_item["start"] = tw_item["due"] - timedelta(hours=1)
         caldav_item["due"] = tw_item["due"]
 
-    # Tags
-    if "tags" in tw_item.keys():
-        caldav_item["categories"] = tw_item["tags"]
-
-    # Project
+    # Tags and projects
+    categories = []
+    categories.extend(tw_item.get("tags", []))
     if "project" in tw_item.keys():
-        categories = []
-        categories.extend(tw_item.get("tags", []))
         categories.append("proj: " + tw_item["project"])
-        caldav_item["categories"] = categories
+    caldav_item["categories"] = categories
 
     # if start-ed, override the status appropriately
     if "start" in tw_item.keys():
