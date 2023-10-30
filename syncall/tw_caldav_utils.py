@@ -113,11 +113,11 @@ def convert_caldav_to_tw(caldav_item: Item) -> Item:
     if "categories" in caldav_item.keys():
         categories = caldav_item["categories"]
         # Search the first 'proj:tag' and use it for the project
-        # Then remove it from the list
-        for i in categories:
-            if i.startswith("proj:"):
-                tw_item["project"] = i.split(":")[1].strip()
-                categories.remove(i)
+        # Then remove it from the list to ensure that data is not stored twice
+        for category in categories:
+            if category.startswith("proj:"):
+                tw_item["project"] = category.split(":")[1].strip()
+                categories.remove(category)
                 break
         tw_item["tags"] = categories
 
